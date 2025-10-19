@@ -86,17 +86,76 @@ const maxSegments = 12;
 
 const defaultLabels = ['iPhone 17', 'iPhone 17 Pro', 'iPhone 17 Pro Max'];
 
-const curatedPalette = [
-  'hsl(0deg 85% 52%)',
-  'hsl(140deg 75% 45%)',
-  'hsl(220deg 80% 56%)'
+const curatedPalettes = [
+  [
+    'hsl(0deg 86% 55%)',
+    'hsl(210deg 88% 56%)',
+    'hsl(140deg 72% 45%)',
+    'hsl(45deg 92% 58%)',
+    'hsl(280deg 70% 60%)',
+    'hsl(330deg 78% 58%)',
+    'hsl(200deg 74% 50%)',
+    'hsl(15deg 88% 56%)'
+  ],
+  [
+    'hsl(190deg 85% 45%)',
+    'hsl(32deg 96% 60%)',
+    'hsl(110deg 66% 52%)',
+    'hsl(280deg 64% 58%)',
+    'hsl(0deg 80% 60%)',
+    'hsl(240deg 70% 55%)',
+    'hsl(60deg 92% 58%)',
+    'hsl(315deg 74% 62%)'
+  ],
+  [
+    'hsl(210deg 60% 50%)',
+    'hsl(0deg 70% 55%)',
+    'hsl(120deg 55% 47%)',
+    'hsl(35deg 75% 55%)',
+    'hsl(265deg 65% 58%)',
+    'hsl(185deg 68% 52%)',
+    'hsl(340deg 65% 60%)',
+    'hsl(55deg 70% 58%)'
+  ],
+  [
+    'hsl(20deg 88% 62%)',
+    'hsl(165deg 68% 48%)',
+    'hsl(280deg 75% 58%)',
+    'hsl(45deg 88% 60%)',
+    'hsl(200deg 80% 54%)',
+    'hsl(320deg 74% 56%)',
+    'hsl(90deg 68% 52%)',
+    'hsl(235deg 78% 62%)'
+  ],
+  [
+    'hsl(350deg 80% 55%)',
+    'hsl(30deg 86% 58%)',
+    'hsl(70deg 78% 52%)',
+    'hsl(120deg 70% 46%)',
+    'hsl(180deg 68% 50%)',
+    'hsl(225deg 72% 55%)',
+    'hsl(275deg 70% 58%)',
+    'hsl(315deg 74% 60%)'
+  ],
+  [
+    'hsl(210deg 78% 60%)',
+    'hsl(260deg 78% 58%)',
+    'hsl(310deg 74% 60%)',
+    'hsl(0deg 80% 58%)',
+    'hsl(50deg 88% 58%)',
+    'hsl(100deg 68% 48%)',
+    'hsl(150deg 72% 50%)',
+    'hsl(200deg 74% 54%)'
+  ]
 ];
 
+let paletteSetIndex = 0;
 let paletteOffset = 0;
 
 function generateColor(index) {
-  const paletteLength = curatedPalette.length;
-  return curatedPalette[(index + paletteOffset) % paletteLength];
+  const activePalette = curatedPalettes[paletteSetIndex] ?? curatedPalettes[0] ?? ['#6366f1'];
+  const paletteLength = activePalette.length || 1;
+  return activePalette[(index + paletteOffset) % paletteLength];
 }
 
 const createInitialSegments = (labels) => {
@@ -182,11 +241,35 @@ const removeSegment = (index) => {
 };
 
 const shuffleColors = () => {
-  paletteOffset = (paletteOffset + 3) % curatedPalette.length;
+  const totalPalettes = curatedPalettes.length;
+  if (!totalPalettes) {
+    return;
+  }
+
+  if (totalPalettes > 1) {
+    let nextSet = paletteSetIndex;
+    while (nextSet === paletteSetIndex) {
+      nextSet = Math.floor(Math.random() * totalPalettes);
+    }
+    paletteSetIndex = nextSet;
+  }
+
+  const activePalette = curatedPalettes[paletteSetIndex];
+  if (activePalette && activePalette.length > 1) {
+    let nextOffset = paletteOffset;
+    while (nextOffset === paletteOffset) {
+      nextOffset = Math.floor(Math.random() * activePalette.length);
+    }
+    paletteOffset = nextOffset;
+  } else {
+    paletteOffset = 0;
+  }
+
   applyColorPalette();
 };
 
 const resetDefaults = () => {
+  paletteSetIndex = 0;
   paletteOffset = 0;
   segments.value = createInitialSegments(defaultLabels);
   segmentCount.value = segments.value.length;
