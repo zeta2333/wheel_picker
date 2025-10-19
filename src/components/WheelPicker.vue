@@ -298,39 +298,60 @@ const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
 
 .pointer {
   position: absolute;
-  top: 12px;
+  top: -18px;
   left: 50%;
   transform: translateX(-50%);
-  width: 16px;
-  height: 30%;
+  width: 28px;
+  height: 34%;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
+  align-items: flex-start;
+  justify-content: center;
   pointer-events: none;
   z-index: 3;
 }
 
-.pointer::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 0;
-  height: 0;
-  border-left: 8px solid transparent;
-  border-right: 8px solid transparent;
-  border-top: 22px solid #dc2626;
-  filter: drop-shadow(0 6px 10px rgba(220, 38, 38, 0.35));
+.pointer-stem {
+  width: 18px;
+  height: 100%;
+  background: linear-gradient(180deg, #1f2937 0%, #0f172a 45%, #000 100%);
+  clip-path: polygon(
+    50% 0%,
+    62% 12%,
+    80% 36%,
+    70% 62%,
+    60% 86%,
+    50% 100%,
+    40% 86%,
+    30% 62%,
+    20% 36%,
+    38% 12%
+  );
+  box-shadow: 0 6px 12px rgba(15, 23, 42, 0.45);
+  position: relative;
 }
 
-.pointer-stem {
-  width: 4px;
-  height: calc(100% - 22px);
-  background: linear-gradient(180deg, #f87171 0%, #b91c1c 100%);
-  border-radius: 999px;
-  box-shadow: 0 6px 12px rgba(248, 113, 113, 0.36);
+.pointer-stem::after {
+  content: '';
+  position: absolute;
+  top: 14%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60%;
+  height: 70%;
+  background: radial-gradient(circle at 50% 20%, rgba(255, 255, 255, 0.18), transparent 70%);
+  clip-path: polygon(
+    50% 0%,
+    62% 12%,
+    80% 36%,
+    70% 62%,
+    60% 86%,
+    50% 100%,
+    40% 86%,
+    30% 62%,
+    20% 36%,
+    38% 12%
+  );
+  opacity: 0.55;
 }
 
 .wheel {

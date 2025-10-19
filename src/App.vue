@@ -1,7 +1,7 @@
 <template>
   <div class="app-shell">
     <header class="intro">
-      <h1>自定义转盘选择器</h1>
+      <h1>转盘选择器</h1>
       <p>配置你的幸运选项，点击中心按钮让转盘为你做出决定。</p>
     </header>
     <WheelPicker />
@@ -25,6 +25,7 @@ import WheelPicker from './components/WheelPicker.vue';
 }
 
 .intro {
+  margin: 0;
   text-align: center;
 }
 
